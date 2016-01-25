@@ -14,12 +14,55 @@ public class Account {
 			name = accountTypeName;
 		}
 	}
+	
+	private enum InterestCalculationStrategy {
+		CHECKING()
+		{
+			@Override
+			public double interestEraned(double amount) {
+				return amount * 0.001;
+			}
+
+		}, 
+		SAVINGS()  {
+			@Override
+			public double interestEraned(double amount) {
+				if (amount <= 1000)
+					return amount * 0.001;
+				else
+					return 1 + (amount-1000) * 0.002;
+			}
+		},
+		MAXI_SAVINGS() {
+			@Override
+			public double interestEraned(double amount) {
+				if (amount <= 1000)
+					return amount * 0.02;
+				if (amount <= 2000)
+					return 20 + (amount-1000) * 0.05;
+				return 70 + (amount-2000) * 0.1;
+			}
+
+		};
+		abstract public double interestEraned(double amount);
+	}
     private final TYPE accountType;
     private List<Transaction> transactions;
-    
+    private InterestCalculationStrategy interestCalculationStrategy;
+
     public Account(TYPE accountType) {
         this.accountType = accountType;
         this.transactions = new ArrayList<Transaction>();
+        switch(accountType) { //It is possible to use a map or enumMap here, but switch is more useful if in a future the strategy will depend on more then just account type (holiday discount for example) 
+        	case MAXI_SAVINGS:
+        		interestCalculationStrategy = InterestCalculationStrategy.MAXI_SAVINGS;
+        		break;
+        	case SAVINGS:
+        		interestCalculationStrategy = InterestCalculationStrategy.SAVINGS;
+        		break;
+        	default:
+        		interestCalculationStrategy = InterestCalculationStrategy.CHECKING;     			
+        }
     }
 
     public void deposit(double amount) {
@@ -40,21 +83,8 @@ public class Account {
 
     public double interestEarned() {
         double amount = sumTransactions();
-        switch(accountType){ // TODO enum with strategy pattern can eliminate a switch.
-            case SAVINGS:
-                if (amount <= 1000)
-                    return amount * 0.001;
-                else
-                    return 1 + (amount - 1000) * 0.002;
-            case MAXI_SAVINGS:
-                if (amount <= 1000)
-                    return amount * 0.02;
-                if (amount <= 2000)
-                    return 20 + (amount - 1000) * 0.05;
-                return 70 + (amount - 2000) * 0.1;
-            default:
-                return amount * 0.001;
-        }
+        return interestCalculationStrategy.interestEraned(amount);
+    
     }
 
     public double sumTransactions() {
