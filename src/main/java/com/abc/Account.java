@@ -11,7 +11,7 @@ public class Account {
     public static final int MAXI_SAVINGS = 2;
 
     private final int accountType;
-    public List<Transaction> transactions;
+    public List<Transaction> transactions; // TODO this breaks encapsulation. Variable should be private
 
     public Account(int accountType) {
         this.accountType = accountType;
