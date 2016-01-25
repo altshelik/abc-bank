@@ -64,14 +64,14 @@ public class Customer {
      * @param toAccount - Account instance to transfer money to
      */
     public void transfer(double amount, Account fromAccount, Account toAccount) {
-    	// Validate that both accounts belongs to this customer
+    	// Ensure that both accounts belong to this customer.
     	if(!this.accounts.contains(fromAccount)) {
     		throw new IllegalArgumentException("Source account does not belong to the customer");
     	}
     	if(!this.accounts.contains(toAccount)) {
     		throw new IllegalArgumentException("Target account does not belong to the customer");
     	}
-    	// Validate transfer from and to the same account
+    	// Invalidate transfer from and to the same account.
     	if(fromAccount == toAccount) {
     		throw new IllegalArgumentException("Cannot transfer money from and to the same account");
     	}
