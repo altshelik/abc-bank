@@ -5,15 +5,19 @@ import java.util.List;
 
 public class Account {
 
-	// TODO Usage of enum would be more appropriate instead of constants.
-    public static final int CHECKING = 0;
-    public static final int SAVINGS = 1;
-    public static final int MAXI_SAVINGS = 2;
-
-    private final int accountType;
-    public List<Transaction> transactions; // TODO this breaks encapsulation. Variable should be private
-
-    public Account(int accountType) {
+	public enum TYPE {		
+		CHECKING ("Checking Account"),
+		SAVINGS("Savings Account"),
+		MAXI_SAVINGS("Maxi Savings Account");
+		final public String name;
+		TYPE(String accountTypeName) {
+			name = accountTypeName;
+		}
+	}
+    private final TYPE accountType;
+    private List<Transaction> transactions;
+    
+    public Account(TYPE accountType) {
         this.accountType = accountType;
         this.transactions = new ArrayList<Transaction>();
     }
@@ -60,8 +64,22 @@ public class Account {
     	return amount;
     }
 
-    public int getAccountType() {
+    public TYPE getAccountType() {
         return accountType;
+    }
+    
+    public void printStatementDetails(StringBuilder str) {
+    	double total = 0.0;
+    	for (Transaction t : this.transactions) {
+    		str.append("  ");
+    		str.append(t.amount < 0 ? "withdrawal" : "deposit");
+    		str.append(" ");
+    		str.append(Bank.toDollars(t.amount));
+    		str.append("\n");
+            total += t.amount;           
+        }
+    	 str.append("Total ");
+    	 str.append(Bank.toDollars(total));
     }
 
 }

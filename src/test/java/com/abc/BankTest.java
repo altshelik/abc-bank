@@ -12,7 +12,7 @@ public class BankTest {
     public void customerSummary() {
         Bank bank = new Bank();
         Customer john = new Customer("John");
-        john.openAccount(new Account(Account.CHECKING));
+        john.openAccount(new Account(Account.TYPE.CHECKING));
         bank.addCustomer(john);
 
         assertEquals("Customer Summary\n - John (1 account)", bank.customerSummary());
@@ -21,7 +21,7 @@ public class BankTest {
     @Test
     public void checkingAccount() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.TYPE.CHECKING);
         Customer bill = new Customer("Bill").openAccount(checkingAccount);
         bank.addCustomer(bill);
 
@@ -33,7 +33,7 @@ public class BankTest {
     @Test
     public void savings_account() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.SAVINGS);
+        Account checkingAccount = new Account(Account.TYPE.SAVINGS);
         bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
 
         checkingAccount.deposit(1500.0);
@@ -45,7 +45,7 @@ public class BankTest {
     @Test
     public void savings_account_LT1000() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.SAVINGS);
+        Account checkingAccount = new Account(Account.TYPE.SAVINGS);
         bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
 
         checkingAccount.deposit(700.0);
@@ -56,7 +56,7 @@ public class BankTest {
     @Test
     public void maxi_savings_account() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.MAXI_SAVINGS);
+        Account checkingAccount = new Account(Account.TYPE.MAXI_SAVINGS);
         bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
 
         checkingAccount.deposit(3000.0);
@@ -68,7 +68,7 @@ public class BankTest {
     @Test
     public void maxi_savings_account_GT1000_LT2000() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.MAXI_SAVINGS);
+        Account checkingAccount = new Account(Account.TYPE.MAXI_SAVINGS);
         bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
 
         checkingAccount.deposit(1700.0);
@@ -79,7 +79,7 @@ public class BankTest {
     @Test
     public void maxi_savings_account_LT1000() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.MAXI_SAVINGS);
+        Account checkingAccount = new Account(Account.TYPE.MAXI_SAVINGS);
         bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
 
         checkingAccount.deposit(600.0);
@@ -92,32 +92,32 @@ public class BankTest {
     	  Bank bank = new Bank();
          
           Customer bill = new Customer("Bill");
-          Account checkingAccount = new Account(Account.CHECKING);
+          Account checkingAccount = new Account(Account.TYPE.CHECKING);
           bank.addCustomer(bill);
           bill.openAccount(checkingAccount);
           checkingAccount.deposit(2000.0); //2.0
-          Account maxiSavingAccount = new Account(Account.MAXI_SAVINGS);
+          Account maxiSavingAccount = new Account(Account.TYPE.MAXI_SAVINGS);
           bill.openAccount(maxiSavingAccount);
           maxiSavingAccount.deposit(3000.0); //+170.0
 
           Customer john = new Customer("John");
           bank.addCustomer(john);
-          checkingAccount = new Account(Account.CHECKING);
+          checkingAccount = new Account(Account.TYPE.CHECKING);
           john.openAccount(checkingAccount);
           checkingAccount.deposit(600.0); //+0.6
-          Account savingAccount = new Account(Account.SAVINGS);
+          Account savingAccount = new Account(Account.TYPE.SAVINGS);
           john.openAccount(savingAccount);
           savingAccount.deposit(1500.0); //+2.0
           
           Customer marry = new Customer("Marry");
-          checkingAccount = new Account(Account.CHECKING);
+          checkingAccount = new Account(Account.TYPE.CHECKING);
           bank.addCustomer(marry);
           marry.openAccount(checkingAccount);
           checkingAccount.deposit(1600.0);  //+1.6
-          maxiSavingAccount = new Account(Account.MAXI_SAVINGS);
+          maxiSavingAccount = new Account(Account.TYPE.MAXI_SAVINGS);
           marry.openAccount(maxiSavingAccount);
           maxiSavingAccount.deposit(1700.0); //+55
-          savingAccount = new Account(Account.SAVINGS);
+          savingAccount = new Account(Account.TYPE.SAVINGS);
           marry.openAccount(savingAccount);
           savingAccount.deposit(700.0); //0.7
           
@@ -126,7 +126,7 @@ public class BankTest {
 
     @Test
 	public void invalidDepositOrWithdrawalAmount() {
-		Account checkingAccount = new Account(Account.CHECKING);
+		Account checkingAccount = new Account(Account.TYPE.CHECKING);
 		try {
 			checkingAccount.deposit(0.0);
 			fail("Expected an IllegalArgumentException to be thrown");        	 

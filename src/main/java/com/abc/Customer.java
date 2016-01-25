@@ -3,8 +3,6 @@ package com.abc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.abs;
-
 public class Customer {
     private String name;
     private List<Account> accounts;
@@ -34,45 +32,27 @@ public class Customer {
         return total;
     }
 
-    public String getStatement() {// TODO eliminate += and + usage with String in a loop. Use String builder instead.
-        String statement = null;
-        statement = "Statement for " + name + "\n";
+    public String getStatement() {
+        StringBuilder statement = new StringBuilder( "Statement for " + name + "\n");
         double total = 0.0;
         for (Account a : accounts) {
-            statement += "\n" + statementForAccount(a) + "\n";
+            statement.append("\n");
+            printStatementForAccount(a , statement);
+            statement.append("\n");
             total += a.sumTransactions();
         }
-        statement += "\nTotal In All Accounts " + toDollars(total);
-        return statement;
+        statement.append("\nTotal In All Accounts ");
+        statement.append(toDollars(total));
+        return statement.toString();
     }
 
-    private String statementForAccount(Account a) {
-        String s = "";
-
-       //Translate to pretty account type
-        switch(a.getAccountType()) {// TODO use of enum instead of constant would eliminate the switch.
-            case Account.CHECKING:
-                s += "Checking Account\n";
-                break;
-            case Account.SAVINGS:
-                s += "Savings Account\n";
-                break;
-            case Account.MAXI_SAVINGS:
-                s += "Maxi Savings Account\n";
-                break;
-        }
-
-        //Now total up all the transactions
-        double total = 0.0;
-        for (Transaction t : a.transactions) {
-            s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + toDollars(t.amount) + "\n";
-            total += t.amount;
-        }
-        s += "Total " + toDollars(total);
-        return s;
+    private String printStatementForAccount(Account a, StringBuilder str) {
+    	 str.append(a.getAccountType().name + "\n");
+         a.printStatementDetails(str);
+         return str.toString();
     }
 
     private String toDollars(double d) {
-        return String.format("$%,.2f", abs(d));
+        return Bank.toDollars(d);
     }
 }

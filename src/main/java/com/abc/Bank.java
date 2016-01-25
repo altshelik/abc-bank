@@ -1,11 +1,17 @@
 package com.abc;
 
+import static java.lang.Math.abs;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bank {
     private List<Customer> customers;
 
+    static public String toDollars(double d){
+        return String.format("$%,.2f", abs(d));
+    }
+    
     public Bank() {
         customers = new ArrayList<Customer>();
     }
@@ -15,10 +21,15 @@ public class Bank {
     }
 
     public String customerSummary() {
-        String summary = "Customer Summary";
-        for (Customer c : customers) // TODO eliminate += and + usage with String in a loop. Use String builder instead.
-            summary += "\n - " + c.getName() + " (" + format(c.getNumberOfAccounts(), "account") + ")";
-        return summary;
+        StringBuilder summary = new StringBuilder("Customer Summary");
+        for (Customer c : customers) {// TODO eliminate += and + usage with String in a loop. Use String builder instead.
+            summary.append("\n - ");
+            summary.append(c.getName());
+            summary.append(" (");
+            summary.append(format(c.getNumberOfAccounts(), "account"));
+            summary.append(')');
+        }
+        return summary.toString();
     }
 
     //Make sure correct plural of word is created based on the number passed in:
