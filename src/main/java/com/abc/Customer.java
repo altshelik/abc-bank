@@ -34,7 +34,7 @@ public class Customer {
         return total;
     }
 
-    public String getStatement() {
+    public String getStatement() {// TODO eliminate += and + usage with String in a loop. Use String builder instead.
         String statement = null;
         statement = "Statement for " + name + "\n";
         double total = 0.0;
@@ -50,7 +50,7 @@ public class Customer {
         String s = "";
 
        //Translate to pretty account type
-        switch(a.getAccountType()){
+        switch(a.getAccountType()) {// TODO use of enum instead of constant would eliminate the switch.
             case Account.CHECKING:
                 s += "Checking Account\n";
                 break;
@@ -72,7 +72,7 @@ public class Customer {
         return s;
     }
 
-    private String toDollars(double d){
+    private String toDollars(double d) {
         return String.format("$%,.2f", abs(d));
     }
 }

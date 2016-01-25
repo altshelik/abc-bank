@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Account {
 
+	// TODO Usage of enum would be more appropriate instead of constants.
     public static final int CHECKING = 0;
     public static final int SAVINGS = 1;
     public static final int MAXI_SAVINGS = 2;
@@ -35,7 +36,7 @@ public class Account {
 
     public double interestEarned() {
         double amount = sumTransactions();
-        switch(accountType){
+        switch(accountType){ // TODO enum with strategy pattern can eliminate a switch.
             case SAVINGS:
                 if (amount <= 1000)
                     return amount * 0.001;
