@@ -66,18 +66,26 @@ public class Account {
     }
 
     public void deposit(double amount) {
+    	this.deposit(amount, "");
+    }
+    
+    public void deposit(double amount, String comment) {
         if (amount <= 0) {
             throw new IllegalArgumentException("amount must be greater than zero");
         } else {
-            transactions.add(new Transaction(amount));
+            transactions.add(new Transaction(amount, comment));
         }
     }
 
     public void withdraw(double amount) {
+    	this.withdraw(amount, "");
+    }
+    
+    public void withdraw(double amount, String comment) {
     	if (amount <= 0) {
     		throw new IllegalArgumentException("amount must be greater than zero");
     	} else {
-    		transactions.add(new Transaction(-amount));
+    		transactions.add(new Transaction(-amount, comment));
     	}
     }
 
@@ -105,8 +113,14 @@ public class Account {
     		str.append(t.amount < 0 ? "withdrawal" : "deposit");
     		str.append(" ");
     		str.append(Bank.toDollars(t.amount));
+    		if(!t.comment.isEmpty()) {
+     			str.append("  ");
+     			str.append('(');
+     			str.append(t.comment);
+     			str.append(')');
+            }
     		str.append("\n");
-            total += t.amount;           
+            total += t.amount;
         }
     	 str.append("Total ");
     	 str.append(Bank.toDollars(total));

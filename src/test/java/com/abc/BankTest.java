@@ -152,4 +152,62 @@ public class BankTest {
 			assertEquals(ex.getMessage(), "amount must be greater than zero");
 		}          
 	}
+    
+    @Test
+	public void transferAmount() {
+		Customer henry = new Customer("Henry");
+		Account checkingAccount = new Account(Account.TYPE.CHECKING);
+		henry.openAccount(checkingAccount);
+		checkingAccount.deposit(1000.0);
+		Account savingsAccount = new Account(Account.TYPE.SAVINGS);
+		henry.openAccount(savingsAccount);
+		henry.transfer(400.0, checkingAccount, savingsAccount);
+		assertEquals(600.0, checkingAccount.sumTransactions(), DOUBLE_DELTA);
+		assertEquals(400.0, savingsAccount.sumTransactions(), DOUBLE_DELTA);
+	}
+    
+	@Test
+	public void transferFromAnotherCustomer() {
+		Customer henry = new Customer("Henry");
+		Account checkingAccount = new Account(Account.TYPE.CHECKING);
+		henry.openAccount(checkingAccount);
+		checkingAccount.deposit(1000.0);
+		Customer john = new Customer("John");
+		Account savingsAccount = new Account(Account.TYPE.SAVINGS);
+		john.openAccount(savingsAccount);
+		try {
+			henry.transfer(500.0, savingsAccount, checkingAccount);
+		} catch (IllegalArgumentException ex){
+			assertEquals(ex.getMessage(), "Source account does not belong to the customer");
+		}
+	}
+
+	@Test
+	public void transferToTheSameAccount() {
+		Customer henry = new Customer("Henry");
+		Account checkingAccount = new Account(Account.TYPE.CHECKING);
+		henry.openAccount(checkingAccount);
+		checkingAccount.deposit(1000.0);
+		try {
+			henry.transfer(500.0, checkingAccount, checkingAccount);
+		} catch (IllegalArgumentException ex){
+			assertEquals(ex.getMessage(), "Cannot transfer money from and to the same account");
+		}
+	}
+	
+	@Test
+	public void transferToAnotherCustomer() {
+		Customer henry = new Customer("Henry");
+		Account checkingAccount = new Account(Account.TYPE.CHECKING);
+		henry.openAccount(checkingAccount);
+		checkingAccount.deposit(1000.0);
+		Customer john = new Customer("John");
+		Account savingsAccount = new Account(Account.TYPE.SAVINGS);
+		john.openAccount(savingsAccount);
+		try {
+			henry.transfer(500.0, checkingAccount, savingsAccount);
+		} catch (IllegalArgumentException ex){
+			assertEquals(ex.getMessage(), "Target account does not belong to the customer");
+		}
+	}
 }
